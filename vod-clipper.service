@@ -1,0 +1,24 @@
+[Unit]
+Description=VOD Clipper — Dropbox watcher & auto-pipeline
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=vod-clipper
+Group=vod-clipper
+WorkingDirectory=/opt/vod-clipper
+EnvironmentFile=/opt/vod-clipper/.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/vod-clipper/venv/bin/python watcher.py
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+
+# Safety limits
+MemoryMax=3G
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target
